@@ -1,8 +1,12 @@
+library('e1071')   # package for svm
 data = read.csv('learn.txt');
+model <- svm(label~.-qid-docid, data)
 test_data = read.csv('test.txt');
 
 # training linear score-function
-model = lm(label~.-qid-docid, data);
+# model = lm(label~.-qid-docid, data);
+
+
 
 # getting score-values of test documents
 scores = predict(model, test_data);
