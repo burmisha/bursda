@@ -1,5 +1,5 @@
-data = read.csv('learn_small.csv');
-test_data = read.csv('test.csv');
+data = read.csv('learn.txt');
+test_data = read.csv('test.txt');
 
 # training linear score-function
 model = lm(label~.-qid-docid, data);
@@ -19,4 +19,4 @@ for (doc_qid in qids) {
 }
 test_data = test_data[,2:3];
 
-write.csv(test_data, "result.csv", row.names=FALSE, quote=FALSE);
+write.csv(test_data, "result.txt", row.names=FALSE, quote=FALSE);
