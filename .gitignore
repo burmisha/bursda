@@ -4,3 +4,15 @@
 # Example code in package build process
 *-Ex.R
 *.txt
+*.jpg
+
+imaging_1/contest/vgg-mkl-class-1.1/
+imaging_1/contest/vlfeat/
+*.png
+
+*.tar
+*.gz
+*.zip
+*.7z
+*.7zip
+*.csv
