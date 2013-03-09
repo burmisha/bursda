@@ -11,21 +11,14 @@ function [Results]=ComputeFMeasure(DataPath,SegResultsSubPath)
 %                 Results(i,1) holds the best F-score for a segmentation of i-th image.
 %                 Results(i,2) and Results(i,3) holds the corresponding Recall and Precision scores.
 
-
-ImageSubfolders =['1'...   %image subfolders
-                  '2'...
-				  '3'...
-                  '4'];
-
+ImageSubfolders =['1', '2', '3', '4'];
 Results = zeros(length(ImageSubfolders),3);
 
 for i=1:length(ImageSubfolders)
     Hmask=GetHumanSeg(fullfile(DataPath, ImageSubfolders(i), 'human_seg'));
     fprintf('Working on image:%s\n', ImageSubfolders(i)); 
     [Pmax Rmax Fmax]= CalcScore(fullfile(DataPath, ImageSubfolders(i), SegResultsSubPath),Hmask);
-    Results(i,1)=Fmax;
-    Results(i,2)=Rmax;
-    Results(i,3)=Pmax;
+    Results(i,:)=[Fmax, Rmax, Pmax];
 end;
 fprintf('Average F-measure:%f\n', mean(Results(:,1)));
 end
@@ -66,12 +59,12 @@ function [p r f]=CalcPRPixel(groundtruth, mask)
     r = sum(groundtruth(:) & mask(:)) ./ sum(groundtruth(:));
     c = sum(mask(:)) - sum(groundtruth(:) & mask(:));
     p = sum(groundtruth(:) & mask(:)) ./ (sum(groundtruth(:) & mask(:)) + c);
-    f = (r*p)/(0.5*(r+p));
+    f = 2*r*p/(r+p);
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %             Calcuate the F-score of the evaluated method             %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [Pmax Rmax Fmax]=CalcScore(SegPath,HumanSeg)
+function [Pmax Rmax Fmax] = CalcScore(SegPath,HumanSeg)
 
 Fmax = 0;
 Pmax = 0;
@@ -100,5 +93,3 @@ for i=1:length(files); %Go over all segmentations in the folder
    end;      
 end;
 end
-
-

@@ -1,1 +1,1 @@
-ComputeFMeasure('data', 'kmeans_result')
+ComputeFMeasure('data', 'kmeans')

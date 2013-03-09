@@ -67,20 +67,19 @@ end
 [L U] = lu(A + Gamma .* eye(m,m));
 Ainv = inv(U) * inv(L); % Computing Ainv using LU factorization
 
-%t = xs;
-xs=round(xs);
-ys=round(ys);
+t = xs;
+xs=round(ys);
+ys=round(t);
 %moving the snake in each iteration
 for i=1:N;
     %for t=1:length(xs)
-        dx = xs;
-        dy = ys;
+        dx = xs
+        dy = ys
         for t=1:length(xs)
-            dx(t) = fy(ys(t), xs(t));
-            dy(t) = fx(ys(t), xs(t));
+            dx(t) = fx;
         end
-        xs = round(max(0,min(Ainv*(Gamma * xs- kappa*dx),size(image,1))));
-        ys = round(max(0,min(Ainv*(Gamma * ys- kappa*dy),size(image,2))));
+        xs = round(max(0,min((Ainv)*(Gamma * xs- kappa*fx(xs, ys))),size(image,1)));
+        ys = round(max(0,min((Ainv)*(Gamma * ys- kappa*fy(xs, ys))),size(image,2)));
     %end
     %Displaying the snake in its new position
     imshow(image,[]); 
