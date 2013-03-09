@@ -57,17 +57,11 @@ Ainv = inv(U) * inv(L); % Computing Ainv using LU factorization
 xs=round(xs);
 ys=round(ys);
 for i=1:N;
-    dx = xs;
-    dy = ys;
-    for t=1:length(xs)
-        dx(t) = fy(ys(t), xs(t));
-        dy(t) = fx(ys(t), xs(t));
-    end
-    xs = round(max(0, min(Ainv * (Gamma*xs - kappa*dx), size(image,1))));
-    ys = round(max(0, min(Ainv * (Gamma*ys - kappa*dy), size(image,2))));
+    xs = Ainv * (Gamma*xs - kappa*interp2(fx,xs,ys));
+    ys = Ainv * (Gamma*ys - kappa*interp2(fy,xs,ys));
     imshow(image,[]); %Displaying the snake in its new position
     hold on;
-    plot(xs, ys, 'r-');
+    plot([xs; xs(1,1)], [ys; ys(1,1)], 'r-');
     hold off;
     pause(0.001)    
 end;

@@ -1,5 +1,4 @@
 function SnakeSegmentation(DataPath,SegResultsSubPath)
-
 % ImageSubfolders = ['1', '2', '3', '4'];
 ImageSubfolders = ['3'];
 for i=1:length(ImageSubfolders)
@@ -13,16 +12,16 @@ for i=1:length(ImageSubfolders)
     %disp('Press Enter...');
     %pause;
     [xs ys] = getsnake(image);
-    alpha = 0.2;    % alpha: Controls tension
-    beta = 0.2;     % beta: Controls rigidity
+    alpha = 1;    % alpha: Controls tension
+    beta = 4;     % beta: Controls rigidity
     gamma = 1;      % gamma: Step size
-    kappa = 0.3;    % kappa: Controls enegry term
+    kappa = 0.6;    % kappa: Controls enegry term
     % wl, we, wt: Weights for line, edge and terminal energy components
     wl = 0.3;
-    we = 0.4;
+    we = 0.6;
     wt = 0.7;
 	% you should tune this parameter here
-    iterations = 50;
+    iterations = 100;
     SegImage = iterate(image, xs, ys, alpha, beta, gamma, kappa, wl, we, wt, iterations);
     imshow(SegImage);
     disp('Press Enter...');
