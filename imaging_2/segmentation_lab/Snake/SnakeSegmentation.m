@@ -13,18 +13,16 @@ for i=1:length(ImageSubfolders)
     %disp('Press Enter...');
     %pause;
     [xs ys] = getsnake(image);
-	% you should tune this parameter here
-    alpha = 0.2;
-	% you should tune this parameter here
-    beta = 0.2;
-    gamma = 1;
-	% you should tune this parameter here
-    kappa = 0.5;
+    alpha = 0.2;    % alpha: Controls tension
+    beta = 0.2;     % beta: Controls rigidity
+    gamma = 1;      % gamma: Step size
+    kappa = 0.3;    % kappa: Controls enegry term
+    % wl, we, wt: Weights for line, edge and terminal energy components
     wl = 0.3;
     we = 0.4;
     wt = 0.7;
 	% you should tune this parameter here
-    iterations = 150;
+    iterations = 50;
     SegImage = iterate(image, xs, ys, alpha, beta, gamma, kappa, wl, we, wt, iterations);
     imshow(SegImage);
     disp('Press Enter...');
