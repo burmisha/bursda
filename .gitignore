@@ -11,6 +11,8 @@ imaging_1/contest/vgg-mkl-class-1.1/
 imaging_1/contest/vlfeat/
 imaging_2/vlfeat/
 *.png
+*.tif
+*.tiff
 
 *.tar
 *.gz
