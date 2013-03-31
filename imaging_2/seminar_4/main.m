@@ -1,13 +1,12 @@
 clear all;
-
 run('../vlfeat/toolbox/vl_setup')
-
 % im = imread('Zebra_Kruger.jpg');
 % im = imread('Zebra-Resimleri5-300x230.jpg');
 im = imread('91010177_large_MTS_Blaggiii1244376picture6.jpg');
 % im = imread('lena_std.tif');
 w = size(im,1);
 h = size(im,2);
+
 %%
 regionSize = 20 ;
 regularizer = 80;
@@ -19,9 +18,10 @@ border = (m(a,b) ~= m(a-1,b)) + (m(a,b) ~= m(a+1,b)) + (m(a,b) ~= m(a,b-1)) + (m
 border = repmat(border,[1 1 3]);
 % imshow(double(im) .* double(border == 0)/255);
 imshow(double(border == 0));
+
 %% 
-SegNum=max(max(segments));
-meanColor=zeros(SegNum,3);
+SegNum = max(max(segments));
+meanColor = zeros(SegNum,3);
 R = im(:,:,1);  G = im(:,:,2);  B = im(:,:,3);
 RR = R * 0;     GG = G * 0;     BB = B * 0;
 for i=1:SegNum
@@ -36,14 +36,13 @@ im_colored=round(im_colored);
 imshow(im_colored)
 
 %%
-
 s = regionprops(segments, 'Centroid');
-DataToInterp=[Centers, meanColor];
-DataToInterp = DataToInterp(~any(isnan(DataToInterp),2),:);
 Centers = cat(1, s.Centroid);
+DataToInterp = [Centers(:,2), Centers(:,1), meanColor];
+DTI = DataToInterp(~any(isnan(DataToInterp),2),:);
 [xq,yq] = meshgrid(1:w, 1:h);
 method = 'linear'; % 'linear', 'cubic', 'natural','nearest','v4'
-im_int(:,:,1) = griddata(Centers(:,1),Centers(:,2),meanColor(:,1),xq,yq,method);
-im_int(:,:,2) = griddata(Centers(:,1),Centers(:,2),meanColor(:,2),xq,yq,method);
-im_int(:,:,3) = griddata(Centers(:,1),Centers(:,2),meanColor(:,3),xq,yq,method);
+im_int(:,:,1) = double(griddata(DTI(:,1),DTI(:,2),DTI(:,3),xq,yq,method))';
+im_int(:,:,2) = double(griddata(DTI(:,1),DTI(:,2),DTI(:,4),xq,yq,method))';
+im_int(:,:,3) = double(griddata(DTI(:,1),DTI(:,2),DTI(:,5),xq,yq,method))';
 imshow(im_int/255)
