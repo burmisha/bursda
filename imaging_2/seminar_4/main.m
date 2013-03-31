@@ -42,7 +42,8 @@ DataToInterp = [Centers(:,2), Centers(:,1), meanColor];
 DTI = DataToInterp(~any(isnan(DataToInterp),2),:);
 [xq,yq] = meshgrid(1:w, 1:h);
 method = 'linear'; % 'linear', 'cubic', 'natural','nearest','v4'
-im_int(:,:,1) = double(griddata(DTI(:,1),DTI(:,2),DTI(:,3),xq,yq,method))';
-im_int(:,:,2) = double(griddata(DTI(:,1),DTI(:,2),DTI(:,4),xq,yq,method))';
-im_int(:,:,3) = double(griddata(DTI(:,1),DTI(:,2),DTI(:,5),xq,yq,method))';
+im_int(:,:,1) = griddata(DTI(:,1),DTI(:,2),DTI(:,3),xq,yq,method)';
+im_int(:,:,2) = griddata(DTI(:,1),DTI(:,2),DTI(:,4),xq,yq,method)';
+im_int(:,:,3) = griddata(DTI(:,1),DTI(:,2),DTI(:,5),xq,yq,method)';
+% imshow((im_int - double(im))/255)
 imshow(im_int/255)
