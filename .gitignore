@@ -20,3 +20,5 @@ imaging_2/vlfeat/
 *.7z
 *.7zip
 *.csv
+*.mat
+*.pdf
