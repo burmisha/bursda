@@ -49,3 +49,7 @@ for e = ei
     PCA_Quality(e) = sum(PCA_Answers == test_labels) / length(test_labels);
 end
 plot(ei, PCA_Quality(ei))
+max(PCA_Quality)
+
+%% LBP
+vl_lbp(im2single(vec2mat(train_faces(:,1),32)),3)
