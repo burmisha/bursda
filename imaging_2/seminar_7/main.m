@@ -59,10 +59,10 @@ max(PCA_Quality)
 
 %% LBP
 disc_hist = 100;
-mask_size = 16;
+mask_size = 3;
 l = vl_lbp(im2single(ones(32)), mask_size);
+
 LBP_Train=zeros(length(l(:)),size(train_faces,2));
-size(LBP_Train)
 for i=1:size(train_faces,2)
     l = vl_lbp(im2single(vec2mat(train_faces(:,i),32)), mask_size);
     LBP_Train(:,i) = l(:);
