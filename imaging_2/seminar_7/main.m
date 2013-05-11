@@ -58,16 +58,17 @@ plot(ei, PCA_Quality(ei))
 max(PCA_Quality)
 
 %% LBP
-%close all
 disc_hist = 100;
-mask_size = 32;
-LBP_Train=zeros(length(vl_lbp(im2single(ones(32)), mask_size)),size(train_faces,2));
+mask_size = 16;
+l = vl_lbp(im2single(ones(32)), mask_size);
+LBP_Train=zeros(length(l(:)),size(train_faces,2));
+size(LBP_Train)
 for i=1:size(train_faces,2)
     l = vl_lbp(im2single(vec2mat(train_faces(:,i),32)), mask_size);
     LBP_Train(:,i) = l(:);
 end
 
-LBP_Test=zeros(length(vl_lbp(im2single(ones(32)), mask_size)),size(test_faces,2));
+LBP_Test=zeros(length(l(:)),size(test_faces,2));
 for i=1:size(test_faces,2)
     l = vl_lbp(im2single(vec2mat(test_faces(:,i),32)), mask_size);
     LBP_Test(:,i) = l(:); 
