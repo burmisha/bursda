@@ -38,9 +38,8 @@ for k = 1:length(images_idx)
 end
 
 %% calculate the similarity of the input to each training image
-ei = 10:100
+ei = 10:100;
 for e = ei
-    e
     num_eigenfaces = 4:e;                                                     % only retain the top 'num_eigenfaces' eigenvectors
     evectors_small = evectors(:, num_eigenfaces);
     features_small = evectors_small' * shifted_train;   
@@ -59,21 +58,28 @@ max(PCA_Quality)
 
 %% LBP
 disc_hist = 100;
-mask_size = 3;
-l = vl_lbp(im2single(ones(32)), mask_size);
+masks = 1:32;
+LBP_Quality = masks;
+for j=1:length(masks)
+    mask_size = masks(j);
+    l = vl_lbp(im2single(ones(32)), mask_size);
 
-LBP_Train=zeros(length(l(:)),size(train_faces,2));
-for i=1:size(train_faces,2)
-    l = vl_lbp(im2single(vec2mat(train_faces(:,i),32)), mask_size);
-    LBP_Train(:,i) = l(:);
+    LBP_Train=zeros(length(l(:)),size(train_faces,2));
+    for i=1:size(train_faces,2)
+        l = vl_lbp(im2single(vec2mat(train_faces(:,i),32)), mask_size);
+        LBP_Train(:,i) = l(:);
+    end
+
+    LBP_Test=zeros(length(l(:)),size(test_faces,2));
+    for i=1:size(test_faces,2)
+        l = vl_lbp(im2single(vec2mat(test_faces(:,i),32)), mask_size);
+        LBP_Test(:,i) = l(:); 
+    end
+
+    LBP_Idx = knnsearch(LBP_Train', LBP_Test');
+    LBP_Answers = train_labels(LBP_Idx);
+    LBP_Quality(j) = sum(LBP_Answers == test_labels) / length(test_labels);
 end
 
-LBP_Test=zeros(length(l(:)),size(test_faces,2));
-for i=1:size(test_faces,2)
-    l = vl_lbp(im2single(vec2mat(test_faces(:,i),32)), mask_size);
-    LBP_Test(:,i) = l(:); 
-end
-
-LBP_Idx = knnsearch(LBP_Train', LBP_Test');
-LBP_Answers = train_labels(LBP_Idx);
-LBP_Quality = sum(LBP_Answers == test_labels) / length(test_labels)
+plot(masks, LBP_Quality)
+axis tight
