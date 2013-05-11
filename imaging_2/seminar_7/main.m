@@ -1,4 +1,5 @@
 clear all;
+cd D:\github\bursda\imaging_2\seminar_7
 run('../vlfeat/toolbox/vl_setup')
 load faces_data.mat
 whos
@@ -14,7 +15,7 @@ shifted_train = train_faces - repmat(mean_face, 1, size(train_faces,2));    % me
 [evectors, score, evalues] = princomp(shifted_train');                      % calculate the ordered eigenvectors and eigenvalues
 features = evectors' * shifted_train;                                       % project the images into the subspace to generate the feature vectors
 
-%%
+%% show faces
 size(score)
 show_eigenfaces = 20;        k = ceil(sqrt(show_eigenfaces+1)); 
 subplot(k, k, 1);
@@ -25,9 +26,13 @@ end
 
 %% Analyse images 17 and 191
 close all
-for k = [17, 191]
-    for i=[1,2,5,10,50,100]
-        imshow(vec2mat(mean_face + evectors(:,1:i) * (score(k, 1:i))',32)'/255)
+levels = [1,2,5,10,20,50,100];
+images_idx = [17, 191];
+n = 1;
+for k = 1:length(images_idx)
+    for i = 1:length(levels)
+        subplot(2, length(levels), n); n = n + 1;
+        imshow(vec2mat(mean_face + evectors(:,1:levels(i)) * (score(images_idx(k), 1:levels(i)))',32)'/255)
         % pause
     end
 end
@@ -48,8 +53,26 @@ for e = ei
     PCA_Answers = train_labels(PCA_Idx);
     PCA_Quality(e) = sum(PCA_Answers == test_labels) / length(test_labels);
 end
+close all
 plot(ei, PCA_Quality(ei))
 max(PCA_Quality)
 
 %% LBP
-vl_lbp(im2single(vec2mat(train_faces(:,1),32)),3)
+%close all
+disc_hist = 100;
+mask_size = 32;
+LBP_Train=zeros(length(vl_lbp(im2single(ones(32)), mask_size)),size(train_faces,2));
+for i=1:size(train_faces,2)
+    l = vl_lbp(im2single(vec2mat(train_faces(:,i),32)), mask_size);
+    LBP_Train(:,i) = l(:);
+end
+
+LBP_Test=zeros(length(vl_lbp(im2single(ones(32)), mask_size)),size(test_faces,2));
+for i=1:size(test_faces,2)
+    l = vl_lbp(im2single(vec2mat(test_faces(:,i),32)), mask_size);
+    LBP_Test(:,i) = l(:); 
+end
+
+LBP_Idx = knnsearch(LBP_Train', LBP_Test');
+LBP_Answers = train_labels(LBP_Idx);
+LBP_Quality = sum(LBP_Answers == test_labels) / length(test_labels)
