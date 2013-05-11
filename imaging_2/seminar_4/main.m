@@ -1,19 +1,20 @@
-clear all;
-run('../vlfeat/toolbox/vl_setup')
-% im = imread('Zebra_Kruger.jpg');
-% im = imread('Zebra-Resimleri5-300x230.jpg');
-im = imread('91010177_large_MTS_Blaggiii1244376picture6.jpg');
-regionSize = 32 ;
-regularizer = 40;
+% %% init for zebra
+% clear all;
+% run('../vlfeat/toolbox/vl_setup')
+% % im = imread('Zebra_Kruger.jpg');
+% % im = imread('Zebra-Resimleri5-300x230.jpg');
+% im = imread('91010177_large_MTS_Blaggiii1244376picture6.jpg');
+% regionSize = 32 ;
+% regularizer = 40;
 
-%%
+%% init for not zebra
 clear all;
 run('../vlfeat/toolbox/vl_setup')
 im = imread('lena_std.tif');
 regionSize = 30 ;
 regularizer = 20;
 
-%%
+%% segmentation
 w = size(im,1);
 h = size(im,2);
 
@@ -26,7 +27,7 @@ border = repmat(border,[1 1 3]);
 imshow(double(im) .* double(border == 0)/255);
 % imshow(double(border == 0));
 
-%% 
+%% common color inside each segment
 SegNum = max(max(segments));
 meanColor = zeros(SegNum,3);
 R = im(:,:,1);  G = im(:,:,2);  B = im(:,:,3);
@@ -42,7 +43,7 @@ im_colored(:,:,1) = RR;     im_colored(:,:,2) = GG;     im_colored(:,:,3) = BB;
 im_colored=round(im_colored);
 imshow(im_colored)
 
-%%
+%% linear approximation of color
 s = regionprops(segments, 'Centroid');
 Centers = cat(1, s.Centroid);
 DataToInterp = [Centers(:,2), Centers(:,1), meanColor];

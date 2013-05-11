@@ -22,3 +22,5 @@ imaging_2/vlfeat/
 *.csv
 *.mat
 *.pdf
+*.html
+*.htm
