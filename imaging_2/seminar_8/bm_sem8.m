@@ -63,6 +63,23 @@ whos
 us2homo = @(x) [x(:); 1];
 homo2us = @(x) x(1:(end-1),:)./(ones(size(x,1)-1,1)*x(end,:));
 P = homo2us(U);
-idx = 1:10:37000;
+idx = 1:10:size(P,2);
 plot3(P(1,idx),P(2,idx),P(3,idx),'.', 'markersize',1)
 
+c1 = homo2us(null(P1));
+c2 = homo2us(null(P2));
+n1 = P1(3,1:3);
+n2 = P2(3,1:3);
+
+hold on
+quiver3(c1(1),c1(2),c1(3),n1(1),n1(2),n1(3),2, 'linewidth',2);
+quiver3(c2(1),c2(2),c2(3),n2(1),n2(2),n2(3),2, 'linewidth',2);
+hold off
+
+%% Image from camera 1
+H1 = homo2us(P1*U);
+plot(H1(1,:), H1(2,:), 'r.', 'markersize',1)
+
+%% Image from camera 2
+H2 = homo2us(P2*U);
+plot(H2(1,:), H2(2,:), 'r.', 'markersize',1)
