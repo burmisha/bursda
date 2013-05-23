@@ -82,4 +82,5 @@ for j=1:length(masks)
 end
 
 plot(masks, LBP_Quality)
+[LBP_Quality_max, best_size] = max(LBP_Quality)
 axis tight
