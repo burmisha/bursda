@@ -1,4 +1,5 @@
 clear all
+close all
 load estimateF.mat
 
 us2homo = @(x) [x; ones(1, size(x,2))];
@@ -37,6 +38,22 @@ F = F./F(3,3)
 I2 = imread('im2.JPG');
 imshow(I2)
 idx = sort(randperm(size(x2,2),20));
+plotEpipolars(F * x1(:,idx))
 coords = homo2us(x2(:,idx));
 plot(coords(1,:), coords(2,:), 'r.');
-plotEpipolars(F * x1(:,idx))
+
+%%
+P1 = eye(3,4)
+b = null(F');
+A = -cross(b * ones(1,3),F);
+P2 = [A,b]
+close all
+answer = zeros(3,size(x1,2));
+for i=1:size(x1,2)
+    M = [cross(N1*x1(:,i) * ones(1,4),P1); cross(N2*x2(:,i) * ones(1,4),P2)];
+    [v,d] = eig(M'*M);
+    answer(:,i) = homo2us(v(1,:)');
+end
+
+plot3(answer(1,:),answer(2,:),answer(3,:), '.', 'markersize', 2)
+axis tight
