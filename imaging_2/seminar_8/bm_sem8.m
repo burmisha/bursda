@@ -12,7 +12,7 @@ for i=1:size(startpoints,2)
     line([x1; x2], [y1; y2],'Color',[0.2 0.2 0.2])
 end
 
-us2homo = @(x) [x(:); 1];
+us2homo = @(x) [x; ones(1, size(x,2))];
 homo2us = @(x) x(1:(end-1),:)./(ones(size(x,1)-1,1)*x(end,:));
 
 H1 = [sqrt(3), -1, 1; 1 sqrt(3) 1; 0 0 2];
@@ -55,15 +55,12 @@ end
 axis equal
 
 %%
-clear all
 close all
 load 3Dto2D.mat
 whos
 
-us2homo = @(x) [x(:); 1];
-homo2us = @(x) x(1:(end-1),:)./(ones(size(x,1)-1,1)*x(end,:));
 P = homo2us(U);
-idx = 1:10:size(P,2);
+idx = 1:1:size(P,2);
 plot3(P(1,idx),P(2,idx),P(3,idx),'.', 'markersize',1)
 
 c1 = homo2us(null(P1));
@@ -83,3 +80,13 @@ plot(H1(1,:), H1(2,:), 'r.', 'markersize',1)
 %% Image from camera 2
 H2 = homo2us(P2*U);
 plot(H2(1,:), H2(2,:), 'r.', 'markersize',1)
+
+%% 
+
+load calibration.mat
+whos
+
+x1 = cell2mat(x(1));
+P1 = CalibrationDLT(x1, us2homo(model));
+x2 = cell2mat(x(2));
+P2 = CalibrationDLT(x2, us2homo(model));

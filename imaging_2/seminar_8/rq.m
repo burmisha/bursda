@@ -3,7 +3,7 @@ function [r,q]=rq(a)
 
 [m,n]=size(a);
 e=eye(m);
-p=e(:,[m:-1:1]);
+p=e(:,m:-1:1);
 [q0,r0]=qr(p*a(:,1:m)'*p);
 
 r=p*r0'*p;
