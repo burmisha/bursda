@@ -24,7 +24,8 @@ A = [a(1,:)'.* b(1,:)'    ...
      a(2,:)'              ...
                b(1,:)'    ...
                b(2,:)'];
-%% Form matrix
+
+%% Form F
 f = -A\ones(size(x1,2),1);
 F_hat = [f(1:3)'; f(4:6)'; f(7:8)' 0];
 FF = N1' * F_hat * N2;
@@ -34,7 +35,7 @@ d = diag(S);
 F = U * diag([d(1:2); 0]) * V';
 F = F./F(3,3)
 
-%%
+%% plot epipolar lines
 I2 = imread('im2.JPG');
 imshow(I2)
 idx = sort(randperm(size(x2,2),20));
@@ -42,11 +43,13 @@ plotEpipolars(F * x1(:,idx))
 coords = homo2us(x2(:,idx));
 plot(coords(1,:), coords(2,:), 'r.');
 
-%%
-P1 = eye(3,4)
+%% build P2
+P1 = eye(3,4);
 b = null(F');
 A = -cross(b * ones(1,3),F);
 P2 = [A,b]
+
+%% plot points
 close all
 answer = zeros(3,size(x1,2));
 for i=1:size(x1,2)
@@ -54,6 +57,5 @@ for i=1:size(x1,2)
     [v,d] = eig(M'*M);
     answer(:,i) = homo2us(v(1,:)');
 end
-
 plot3(answer(1,:),answer(2,:),answer(3,:), '.', 'markersize', 2)
 axis tight
