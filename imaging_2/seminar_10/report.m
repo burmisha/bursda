@@ -1,5 +1,5 @@
 clear all
-cd d:\github\bursda\imaging_2\seminar_10
+% cd d:\github\bursda\imaging_2\seminar_10
 im1 = rgb2gray(imread('tsukuba1.png'));
 im2 = rgb2gray(imread('tsukuba2.png'));
 
@@ -16,7 +16,6 @@ ssd.name = 'SSD';
 cut = @(x, l, r) [zeros(1,min(max(1-l,0),r-l+1)), x(max(1,l):min(length(x),r)), zeros(1,max(r-length(x),0))];
 for algo = [sad ssd]
     for m=1:50
-        m
         mask = ones(m,1);
         Disparity = zeros(h, w);
         for r = 1:h
