@@ -13,6 +13,7 @@ imaging_2/vlfeat/
 *.png
 *.tif
 *.tiff
+*.gif
 
 *.tar
 *.gz
