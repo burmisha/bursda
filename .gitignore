@@ -2,6 +2,8 @@
 .Rhistory
 *.asv
 
+*.pyc
+
 # Example code in package build process
 *-Ex.R
 *.txt
@@ -10,6 +12,11 @@
 imaging_1/contest/vgg-mkl-class-1.1/
 imaging_1/contest/vlfeat/
 imaging_2/vlfeat/
+
+!inforet/
+inforet/*
+!inforet/_burmisha/
+
 *.png
 *.tif
 *.tiff
